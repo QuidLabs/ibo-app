@@ -61,7 +61,7 @@ const Home: NextPage<HomeProps> = ({ transactions }) => {
               <Mint />
             </div>
             <div className={styles.videoPlayer}>
-              <iframe width="650" height="365" src="https://www.youtube.com/embed/uHjjcv1DAIg"
+              <iframe width="650" height="365" src="https://www.youtube.com/embed/AREzvn3FSWc"
                       title="YouTube video player" frameBorder="0"
                       allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                       allowFullScreen />

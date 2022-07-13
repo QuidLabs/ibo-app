@@ -38,7 +38,6 @@ const Footer: React.VFC = () => {
     <footer className={styles.root}>
       <div className={styles.media}>
         <audio ref={(el) => (player.current = el)} autoPlay={false} loop>
-          <source src="/sounds/song.mp4" type="audio/mp4" />
           <source src="/sounds/song.mp3" type="audio/mpeg" />
         </audio>
         <button className={styles.music} onClick={togglePlay}>
@@ -47,13 +46,13 @@ const Footer: React.VFC = () => {
         </button>
         <div className={styles.spacer} />
         <a
-          href="https://www.youtube.com/watch?v=v8biN7ejuas"
+          href="https://www.youtube.com/watch?v=uHjjcv1DAIg"
           target="_blank"
           rel="noreferrer"
           className={styles.youtube}
         >
           <Icon name="youtube" className={styles.youtubeIcon} />
-          NEAR|CON
+          ETHdenver
         </a>
       </div>
       
@@ -66,7 +65,7 @@ const Footer: React.VFC = () => {
           <Icon name="link-hover-2" className={styles.socialIconHover} />
         </a>
         <a
-          href="https://medium.com/@GlobalMoney"
+          href="https://mirror.xyz/sukc.eth"
           className={cx(styles.socialLink, styles.socialLink3)}
         >
           <Icon name="medium" className={styles.socialIcon} />
@@ -82,7 +81,7 @@ const Footer: React.VFC = () => {
           <Icon name="link-hover-1" className={styles.socialIconHover} />
         </a>
         <a
-          href="https://github.com/QuidMint/QDO/blob/main/README.md"
+          href="https://github.com/QuidMint/IBO/blob/main/README.md"
           target="_blank"
           rel="noreferrer"
           className={cx(styles.socialLink, styles.socialLink2)}
@@ -91,7 +90,7 @@ const Footer: React.VFC = () => {
           <Icon name="link-hover-2" className={styles.socialIconHover} />
         </a>
         <a
-          href="mailto:rich@quid.io"
+          href="mailto:john@quid.io"
           className={cx(styles.socialLink, styles.socialLink3)}
         >
           <Icon name="email" className={styles.socialIcon} />

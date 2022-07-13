@@ -7,4 +7,6 @@ find .next -type f -print0 | xargs -0 sed -i \
   -e "s#INFURA_KEY_PLACEHOLDER#$NEXT_PUBLIC_INFURA_KEY#g" \
   -e "s#NETWOKR_PLACEHOLDER#$NEXT_PUBLIC_NETWOKR#g"
 
+cp -r .next /static-data/
+
 npm run start

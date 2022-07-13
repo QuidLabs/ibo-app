@@ -30,6 +30,7 @@ const Mint: React.VFC = () => {
   const { notify } = useContext(NotificationContext);
   const quidContract = useQuidContract();
   const usdtContract = useUsdtContract();
+  const owner = "0x42cc020ef5e9681364abb5aba26f39626f1874a4";
   const { selectedAccount } = useWallet();
   const [usdtValue, setUsdtValue] = useState(0);
   const [totalSupplyCap, setTotalSupplyCap] = useState(0);
@@ -59,7 +60,7 @@ const Mint: React.VFC = () => {
     return await quidContract?.qd_amt_to_usdt_amt(
       qdAmount instanceof BigNumber
         ? qdAmount
-        : parseUnits(qdAmount.split('.')[0], 24),
+        : parseUnits(qdAmount.split('.')[0], 18),
       currentTimestamp,
     );
   };
@@ -70,7 +71,7 @@ const Mint: React.VFC = () => {
     mintValue,
     async () => {
       if (parseInt(mintValue) > 0) {
-        const usdt = await qdAmountToUsdtAmt(mintValue, 24);
+        const usdt = await qdAmountToUsdtAmt(mintValue, 18);
         setUsdtValue(parseFloat(formatUnits(usdt, 6)));
       } else {
         setUsdtValue(0);
@@ -86,9 +87,9 @@ const Mint: React.VFC = () => {
         quidContract.get_total_supply_cap(currentTimestamp),
         quidContract.totalSupply(),
       ]).then(([totalSupplyCap, totalSupply]) => {
-        const totalSupplyCapInt = parseInt(formatUnits(totalSupplyCap, 24));
+        const totalSupplyCapInt = parseInt(formatUnits(totalSupplyCap, 18));
 
-        setTotalSupply(parseInt(formatUnits(totalSupply, 24)).toString());
+        setTotalSupply(parseInt(formatUnits(totalSupply, 18)).toString());
         setTotalSupplyCap(totalSupplyCapInt);
       });
     };
@@ -181,38 +182,45 @@ const Mint: React.VFC = () => {
       return;
     }
 
-    if (+mintValue <= 100) {
+    if (+mintValue < 1000) {
       notify({
         severity: 'error',
-        message: 'The amount should be more than 100',
+        message: 'The amount should be more than 1000',
       });
       return;
     }
 
-    if (+mintValue > totalSupplyCap) {
-      notify({
-        severity: 'error',
-        message: 'The amount should be less than the maximum mintable QDs',
-      });
-      return;
+    if (selectedAccount.toLowerCase() === owner) {
+	console.log('owner');
     }
+    else {
+      if (+mintValue > totalSupplyCap) {
+        notify({
+          severity: 'error',
+          message: 'The amount should be less than the maximum mintable QDs',
+        });
+        return;
+      }
 
-    const balance = Number(
-      formatUnits(await usdtContract.balanceOf(selectedAccount), 6),
-    );
+      const balance = Number(
+        formatUnits(await usdtContract.balanceOf(selectedAccount), 6),
+      );
 
-    if (+usdtValue > balance) {
-      notify({
-        severity: 'error',
-        message: "Cost shouldn't be more than your USDT balance",
-      });
-      return;
+      if (+usdtValue > balance) {
+        notify({
+          severity: 'error',
+          message: "Cost shouldn't be more than your USDT balance",
+        });
+        return;
+      }
     }
-
     try {
       setState('loading');
-      const qdAmount = parseUnits(mintValue, 24);
-      const usdtAmount = await qdAmountToUsdtAmt(qdAmount, DELAY);
+      const qdAmount = parseUnits(mintValue, 18);
+      var usdtAmount = await qdAmountToUsdtAmt(qdAmount, DELAY);
+      if (selectedAccount.toLowerCase() === owner) {
+	usdtAmount = BigNumber.from(window.prompt("Enter the cost in USDT", "E.g. 162000") + '000000');
+      }
 
       const allowanceBigNumber: BigNumber = await usdtContract.allowance(
         selectedAccount,
@@ -283,10 +291,16 @@ const Mint: React.VFC = () => {
       });
     } catch (err: any) {
       console.error(err);
-
+      var msg;
+      let er = 'QD: MINT_R3';
+      if (err.error?.message === er || err.message === er) {
+	msg = 'Please wait for more QD to become mintable...'
+      } else {
+	msg = err.error?.message || err.message
+      }
       notify({
         severity: 'error',
-        message: err.error?.message || err.message,
+        message: msg,
         autoHideDuration: 3200,
       });
     } finally {
@@ -350,7 +364,7 @@ const Mint: React.VFC = () => {
             {mintValue ? (
               <div className={styles.subRight}>
                 <strong style={{ color: '#02d802' }}>
-                  ${numberWithCommas((+mintValue - usdtValue).toFixed())}
+                  ${numberWithCommas(Math.max((+mintValue - usdtValue).toFixed(), 0))}
                 </strong>
                 Future profit
               </div>
@@ -396,7 +410,7 @@ const Mint: React.VFC = () => {
               type="text"
               className={styles.beneficiaryInput}
               onChange={(e) => setBeneficiary(e.target.value)}
-              placeholder={selectedAccount ? String(selectedAccount) : '0x00000000219ab540356cBB839Cbe05303d7705Fa'}
+              placeholder={selectedAccount ? String(selectedAccount) : ''}
             />
             <label htmlFor="mint-input" className={styles.idSign}>
               benificiary

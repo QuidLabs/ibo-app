@@ -37,15 +37,19 @@ const Summary: React.VFC = () => {
     });
 
     const updateInfo = () => {
-      const qdAmount = parseUnits('1', 24);
+      const qdAmount = parseUnits('1', 18);
       contract
         ?.qd_amt_to_usdt_amt(qdAmount, currentTimestamp)
         .then((data: BigNumber) => {
-          setPrice(String(Number(formatUnits(data, 6)) * 100));
+          let n = Number(formatUnits(data, 6)) * 100;
+	  if (n > 100) {
+	    n = 100
+	  }
+	  setPrice(String(n));
         });
       
       contract?.totalSupply().then((totalSupply: BigNumber) => {
-        setTotalMinted(formatUnits(totalSupply, 24).split('.')[0]);
+        setTotalMinted(formatUnits(totalSupply, 18).split('.')[0]);
       });
 
       usdtContract
@@ -69,10 +73,12 @@ const Summary: React.VFC = () => {
   }, [contract, usdtContract]);
 
   const daysLeft = smartContractStartTimestamp ? (
-    Math.ceil(
-      Number(mintPeriodDays) -
-        (Number(currentTimestamp) - Number(smartContractStartTimestamp)) /
-          SECONDS_IN_DAY,
+    Math.max(
+      Math.ceil(
+        Number(mintPeriodDays) -
+          (Number(currentTimestamp) - Number(smartContractStartTimestamp)) /
+            SECONDS_IN_DAY,
+      ), 0
     )
   ) : (
     <>&nbsp;</>
@@ -102,7 +108,7 @@ const Summary: React.VFC = () => {
         <div className={styles.value}>{numberWithCommas(Number(totalMinted))}</div>
       </div>
       <div className={styles.section}>
-        <div className={styles.title}>Contract</div>
+        <div className={styles.title}>Address (QU!D LTD)</div>
         <div className={styles.valueSmall}>
           <a
             href={`https://${

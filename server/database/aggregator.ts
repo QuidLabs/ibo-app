@@ -24,7 +24,7 @@ export const handleMint = async (
       transactionHash,
       address,
       costInUsd: formatUnits(costInUsd, 6),
-      qdAmount: formatUnits(qdAmount, 24),
+      qdAmount: formatUnits(qdAmount, 18),
       timestamp: block.timestamp.toString(),
     };
 

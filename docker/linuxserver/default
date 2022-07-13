@@ -26,6 +26,18 @@ server {
     add_header Referrer-Policy "strict-origin";
     add_header Strict-Transport-Security "max-age=31536000; includeSubDomains; preload";
 
+    location ^~ /static/ {
+        alias /static-data/.next/public/static/;
+        sendfile           on;
+        sendfile_max_chunk 1m;
+    }
+
+    location ^~ /_next/ {
+        alias /static-data/.next/;
+        sendfile           on;
+        sendfile_max_chunk 1m;
+    }
+
     location / {
 
         include /config/nginx/proxy.conf;

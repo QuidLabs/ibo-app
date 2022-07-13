@@ -1,4 +1,4 @@
-const ONE_DAY = 24 * 60 * 60 * 1; // 1 day in seconds
+const ONE_DAY = 18 * 60 * 60 * 1; // 1 day in seconds
 const START_PRICE = 22;
 const FINAL_PRICE = 96;
 const SALE_LENGTH = 54 * ONE_DAY;

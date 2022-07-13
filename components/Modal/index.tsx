@@ -43,14 +43,7 @@ export function Modal({ open = false, handleAgree, handleClose }: { open: boolea
               ref={descriptionElementRef}
               tabIndex={-1}
             >
-              {[...new Array(50)]
-                .map(
-                  () => `Cras mattis consectetur purus sit amet fermentum.
-Cras justo odio, dapibus ac facilisis in, egestas eget quam.
-Morbi leo risus, porta ac consectetur ac, vestibulum at eros.
-Praesent commodo cursus magna, vel scelerisque nisl consectetur et.`,
-                )
-                .join('\n')}
+I submit my consent to the following terms of QU!D LTD, a company incorporated in the BVI, as well as the Postulations section of book.quid.io I confirm that I am at least 18 years of age, or the age of majority in the jurisdiction where I reside, if greater than 18 years of age. I confirm that I am not a citizen of the United States or lawful permanent resident of the United States (whether or not located in the United States). I confirm that I am not physically located in the United States, or using any technology such as a virtual private network, proxy or similar service. I confirm, to the best of my knowledge, that I am not acting on behalf of, or at the direction of, or in coordination with, a U.S. person (i.e., any citizen of the United States, person who is a lawful permanent resident of the United States, or any other entity, organization or group that is incorporated to do business in the United States). I have obtained adequate technical, administrative and legal advice, and by accessing quid.io I am expressly declaring and confirming that I am not a citizen or resident of any country or jurisdiction under any form of international sanctions, black or grey-listing, that would forbid my activity on quid.io or require any form of licensing or authorization to pursue acquiring or using any kind of blockchain and/or cryptocurrency token utility, platform, software, or interface. I acknowledge that interacting with quid.io cannot be construed as engagement in an investment contract with expectation of future profit, nor is it an invitation or offer to invest into any common enterprise.
             </DialogContentText>
           </DialogContent>
           <DialogActions>
