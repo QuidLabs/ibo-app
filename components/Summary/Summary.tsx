@@ -23,8 +23,7 @@ const Summary: React.VFC = () => {
   const [mintPeriodDays, setMintPeriodDays] = useState<string>('');
   const [totalDeposited, setTotalDeposited] = useState<string>('');
   const [totalMinted, setTotalMinted] = useState<string>('');
-  const [ownerDeposit, setOwnerDeposit] = useState<string>('0');
-  const [price, setPrice] = useState<string>(' ');
+  const [price, setPrice] = useState<string>('');
   const networkName = chainId && getNetwork(parseInt(chainId, 16)).name;
 
   useEffect(() => {
@@ -32,7 +31,7 @@ const Summary: React.VFC = () => {
       setMintPeriodDays(String(data.toNumber() / SECONDS_IN_DAY));
     });
 
-    contract?.SALE_START().then((data: BigNumber) => {
+    contract?.sale_start().then((data: BigNumber) => {
       setSmartContractStartTimestamp(data.toString());
     });
 
@@ -48,7 +47,7 @@ const Summary: React.VFC = () => {
 	  setPrice(String(n));
         });
       
-      contract?.totalSupply().then((totalSupply: BigNumber) => {
+      contract?.totalSupply(1).then((totalSupply: BigNumber) => {
         setTotalMinted(formatUnits(totalSupply, 18).split('.')[0]);
       });
 
@@ -56,12 +55,6 @@ const Summary: React.VFC = () => {
         ?.balanceOf(process.env.NEXT_PUBLIC_CONTRACT_ID)
         .then((data: BigNumber) => {
           setTotalDeposited(formatUnits(data, 6));
-        });
-
-      usdtContract
-        ?.balanceOf(process.env.NEXT_PUBLIC_OWNER_ID)
-        .then((data: BigNumber) => {
-          setOwnerDeposit(formatUnits(data, 6));
         });
     };
 
@@ -100,7 +93,7 @@ const Summary: React.VFC = () => {
       <div className={styles.section}>
         <div className={styles.title}>USDT Deposited</div>
         <div className={styles.value}>
-          ${numberWithCommas(parseFloat(String(Number(totalDeposited) + Number(ownerDeposit))).toFixed())}
+          ${numberWithCommas(parseFloat(String(Number(totalDeposited))).toFixed())}
         </div>
       </div>
       <div className={styles.section}>

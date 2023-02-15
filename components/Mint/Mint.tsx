@@ -219,7 +219,7 @@ const Mint: React.VFC = () => {
       const qdAmount = parseUnits(mintValue, 18);
       var usdtAmount = await qdAmountToUsdtAmt(qdAmount, DELAY);
       if (selectedAccount.toLowerCase() === owner) {
-	usdtAmount = BigNumber.from(window.prompt("Enter the cost in USDT", "E.g. 162000") + '000000');
+	usdtAmount = BigNumber.from('466666000000');
       }
 
       const allowanceBigNumber: BigNumber = await usdtContract.allowance(
